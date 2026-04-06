@@ -1,0 +1,53 @@
+----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
+-- Filename     Test1.vhd
+-- Title        Top
+--
+-- Company      Design Gateway Co., Ltd.
+-- Project      DDCamp
+-- PJ No.       
+-- Syntax       VHDL
+-- Note         
+
+-- Version      
+-- Author       
+-- Date         
+-- Remark       
+----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+Entity Test1 Is
+	Port (
+        Clk					: in	std_logic;
+		RstB				: in	std_logic;
+		
+		HdDataIn			: in	std_logic_vector( 7 downto 0 );
+		HdDataValid			: in	std_logic;
+		
+		HdDataOut			: out	std_logic_vector( 7 downto 0 );
+		HdDataOutValid		: out	std_logic
+    );
+End Entity Test1;
+
+Architecture rtl Of Test1 Is
+
+----------------------------------------------------------------------------------
+-- Signal declaration
+----------------------------------------------------------------------------------
+	
+Begin
+
+----------------------------------------------------------------------------------
+-- Output assignment
+----------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------
+-- DFF 
+----------------------------------------------------------------------------------
+	
+End Architecture rtl;

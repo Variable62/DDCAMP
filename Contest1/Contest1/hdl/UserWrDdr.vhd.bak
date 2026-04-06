@@ -1,0 +1,150 @@
+----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
+-- Filename     UserWrDdr.vhd
+-- Title        Top
+--
+-- Company      Design Gateway Co., Ltd.
+-- Project      DDCamp
+-- PJ No.       
+-- Syntax       VHDL
+-- Note         
+
+-- Version      1.00
+-- Author       B.Attapon
+-- Date         2017/12/20
+-- Remark       New Creation
+----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.std_logic_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.all;
+use IEEE.STD_LOGIC_UNSIGNED.all;
+
+Entity UserWrDdr Is
+	Port
+	(
+		RstB			: in	std_logic;							-- use push button Key0 (active low)
+		Clk				: in	std_logic;							-- clock input 100 MHz
+
+		-- WrCtrl I/F
+		MemInitDone		: in	std_logic;
+		MtDdrWrReq		: out	std_logic;
+		MtDdrWrBusy		: in	std_logic;
+		MtDdrWrAddr		: out	std_logic_vector( 28 downto 7 );
+		
+		-- T2UWrFf I/F
+		T2UWrFfRdEn		: out	std_logic;
+		T2UWrFfRdData	: in	std_logic_vector( 63 downto 0 );
+		T2UWrFfRdCnt	: in	std_logic_vector( 15 downto 0 );
+		
+		-- UWr2DFf I/F
+		UWr2DFfRdEn		: in	std_logic;
+		UWr2DFfRdData	: out	std_logic_vector( 63 downto 0 );
+		UWr2DFfRdCnt	: out	std_logic_vector( 15 downto 0 )
+	);
+End Entity UserWrDdr;
+
+Architecture rtl Of UserWrDdr Is
+
+    -- Internal signals
+    signal rMtDdrWrAddr   : std_logic_vector(28 downto 7) := (others => '0');
+    signal rMtDdrWrReq    : std_logic := '0';
+    signal rMemInitDone   : std_logic_vector(1 downto 0) := (others => '0');
+    signal rDataCnt       : std_logic_vector(4 downto 0) := (others => '0'); -- 5 bit
+    signal rFlag          : std_logic := '0';
+
+begin
+    ----------------------------------------------------------------------------
+    -- Output assignment (correct direction)
+    ----------------------------------------------------------------------------
+    MtDdrWrAddr <= rMtDdrWrAddr;
+    MtDdrWrReq  <= rMtDdrWrReq;
+
+	 -- bypass
+	 T2UWrFfRdEn   <= UWr2DFfRdEn;        -- request FIFO read when DDR needs
+     UWr2DFfRdData <= T2UWrFfRdData;      -- data path (registered)
+     UWr2DFfRdCnt  <= T2UWrFfRdCnt;       -- usedw passed through
+    ----------------------------------------------------------------------------
+    -- Write request generation (u_rMtDdrWrReq)
+    ----------------------------------------------------------------------------
+    u_rMtDdrWrReq : process(Clk)
+    begin
+        if rising_edge(Clk) then
+            if RstB = '0' then
+                rMtDdrWrReq <= '0';
+                rFlag       <= '0';
+            else
+                if rMemInitDone(1) = '1' then
+                    -- convert T2UWrFfRdCnt to integer for compare
+                    if (to_integer(unsigned(T2UWrFfRdCnt)) > 32) and (MtDdrWrBusy = '0') then
+                        rMtDdrWrReq <= '1';
+                        rFlag       <= '1';
+                    else
+                        rMtDdrWrReq <= '0';
+                        rFlag       <= '0';
+                    end if;
+                else
+                    rMtDdrWrReq <= '0';
+                    rFlag       <= '0';
+                end if;
+            end if;
+        end if;
+    end process u_rMtDdrWrReq;
+
+
+    ----------------------------------------------------------------------------
+    -- Address control (u_rMtDdrWrAddr)
+    -- Increment address when a write has been requested and DDR acknowledges busy (handshake)
+    ----------------------------------------------------------------------------
+    u_rMtDdrWrAddr : process(Clk)
+    begin
+        if rising_edge(Clk) then
+            if RstB = '0' then
+                rMtDdrWrAddr <= (others => '0');
+            else
+                if rMemInitDone(1) = '1' then
+                    if (rFlag = '1') and (MtDdrWrBusy = '0') then
+                        rMtDdrWrAddr <= std_logic_vector( unsigned(rMtDdrWrAddr) + 1 );
+                    else
+                        rMtDdrWrAddr <= rMtDdrWrAddr;
+                    end if;
+                else
+                    rMtDdrWrAddr <= (others => '0');
+                end if;
+            end if;
+        end if;
+    end process u_rMtDdrWrAddr;
+
+
+    ----------------------------------------------------------------------------
+    -- Data counter (u_rDataCnt)
+    ----------------------------------------------------------------------------
+    u_rDataCnt : process(Clk)
+    begin
+        if rising_edge(Clk) then
+            if RstB = '0' then
+                rDataCnt <= (others => '0');
+            else
+                if T2UWrFfRdEn = '1' then
+                    rDataCnt <= std_logic_vector( unsigned(rDataCnt) + 1 );
+                end if;
+            end if;
+        end if;
+    end process u_rDataCnt;
+
+
+    ----------------------------------------------------------------------------
+    -- MemInitDone synchronization (u_rMemInitDone)
+    ----------------------------------------------------------------------------
+    u_rMemInitDone : process(Clk)
+    begin
+        if rising_edge(Clk) then
+            if RstB = '0' then
+                rMemInitDone <= "00";
+            else
+                rMemInitDone <= rMemInitDone(0) & MemInitDone;
+            end if;
+        end if;
+    end process u_rMemInitDone;
+
+End Architecture rtl;

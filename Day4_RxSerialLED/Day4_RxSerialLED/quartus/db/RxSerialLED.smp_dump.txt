@@ -1,0 +1,6 @@
+
+State Machine - |RxSerialLED|RxSerial:u_RxSerial|rState
+Name rState.stWtEnd rState.stWrReq rState.stIdle 
+rState.stIdle 0 0 0 
+rState.stWrReq 0 1 1 
+rState.stWtEnd 1 0 1 

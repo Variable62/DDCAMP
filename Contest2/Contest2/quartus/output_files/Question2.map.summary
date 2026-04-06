@@ -1,0 +1,16 @@
+Analysis & Synthesis Status : Successful - Fri Nov 07 15:05:05 2025
+Quartus Prime Version : 17.1.0 Build 590 10/25/2017 SJ Lite Edition
+Revision Name : Question2
+Top-level Entity Name : Question2
+Family : MAX 10
+Total logic elements : 8,419
+    Total combinational functions : 6,473
+    Dedicated logic registers : 4,765
+Total registers : 4923
+Total pins : 138
+Total virtual pins : 0
+Total memory bits : 16,096
+Embedded Multiplier 9-bit elements : 0
+Total PLLs : 3
+UFM blocks : 0
+ADC blocks : 0

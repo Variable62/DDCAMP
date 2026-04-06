@@ -1,0 +1,129 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "VGAClkB",
+					"strict" : false
+				},
+				{
+					"name" : "VGADe",
+					"strict" : false
+				},
+				{
+					"name" : "VGAHSync",
+					"strict" : false
+				},
+				{
+					"name" : "VGAVSync",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[0]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[1]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[2]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[3]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[4]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[5]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[6]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[7]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[8]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[9]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[10]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[11]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[12]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[13]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[14]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[15]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[16]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[17]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[18]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[19]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[20]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[21]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[22]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAData[23]",
+					"strict" : false
+				},
+				{
+					"name" : "VGAClk",
+					"strict" : false
+				},
+				{
+					"name" : "VGARstB",
+					"strict" : false
+				}
+			]
+		}
+	]
+}

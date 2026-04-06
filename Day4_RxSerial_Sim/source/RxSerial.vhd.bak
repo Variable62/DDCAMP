@@ -1,0 +1,192 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.all;
+use IEEE.STD_LOGIC_ARITH.all;
+use IEEE.STD_LOGIC_UNSIGNED.all;
+
+Entity RxSerial Is
+Port(
+	RstB		: in	std_logic;
+	Clk			: in	std_logic;
+	
+	SerDataIn	: in	std_logic;
+
+	RxFfFull	: in	std_logic;
+	RxFfWrData	: out	std_logic_vector(7 downto 0);
+	RxFfWrEn	: out	std_logic
+);
+End Entity RxSerial;
+
+Architecture rtl Of RxSerial Is
+----------------------------------------------------------------------------------
+-- Constant declaration
+----------------------------------------------------------------------------------
+constant cBuadrate : integer := x"75";
+
+----------------------------------------------------------------------------------
+-- Signal declaration
+----------------------------------------------------------------------------------
+type SerStateType is (stIdle, stWrReq, stWrEnd);
+
+signal rState		: SerStateType;
+signal rSerDataIn	: std_logic_vector(9 downto 0);
+signal rRxFfWrEn	: std_logic;
+signal rRxFfWrData	: std_logic_vector(7 downto 0);
+signal rBuadCnt		: std_logic_vector(9 downto 0);
+signal rBuadEnd		: std_logic;
+signal rRxFfFull	: std_logic;
+signal rDataCnt		: std_logic_vector(3 downto 0);
+
+Begin
+----------------------------------------------------------------------------------
+-- Output assignment
+----------------------------------------------------------------------------------
+	RxFfWrEn   <= rRxFfWrEn;
+	RxFfWrData <= rRxFfWrData;
+
+----------------------------------------------------------------------------------
+-- State Machine
+----------------------------------------------------------------------------------
+	u_rState	: Process(Clk)
+	Begin
+		if (rising_edge(Clk)) then
+			if (RstB = '0') then
+				rState <= stIdle;
+			else
+				case (rState) is
+					when stIdle =>
+						if (rRxFfWrEn = '0' and RxFfFull = '0') then
+							rState <= stWrReq;
+						else
+							rState <= stIdle;
+						end if;
+
+					when stWrReq =>
+						if (rRxFfWrEn = '1') then
+							rState <= stWrEnd;
+						else
+							rState <= stWrReq;
+						end if;
+
+					when stWrEnd =>
+						if (rSerDataIn(9) /= '1' or RxFfFull = '1') then
+							rState <= stWrEnd;
+						else
+							rState <= stIdle;
+						end if;
+
+					when others =>
+						rState <= stIdle;
+				end case;
+			end if;
+		end if;
+	End Process u_rState;
+
+----------------------------------------------------------------------------------
+-- Data Counter
+----------------------------------------------------------------------------------
+	u_rDataCnt : Process(Clk)
+	begin
+		if (rising_edge(Clk)) then
+			if (RstB = '0') then
+				rDataCnt <= (others => '0');
+			else
+				if (rBuadCnt = "0000000001" and RxFfFull = '0') then
+					rDataCnt <= rDataCnt + 1;
+				else
+					rDataCnt <= rDataCnt;
+				end if;
+			end if;
+		end if;
+	End Process u_rDataCnt;
+
+----------------------------------------------------------------------------------
+-- Write Enable
+----------------------------------------------------------------------------------
+	u_rRxFfWrEn : Process(Clk)
+	begin
+		if (rising_edge(Clk)) then
+			if (RstB = '0') then
+				rRxFfWrEn <= '0';
+			else
+				if (rState = stWrEnd) then
+					if (rSerDataIn(9) = '1') then -- Stop Bit = 1
+						rRxFfWrEn <= '1';
+					else
+						rRxFfWrEn <= '0';
+					end if;
+				else
+					rRxFfWrEn <= '0';
+				end if;
+			end if;
+		end if;
+	End Process u_rRxFfWrEn;
+
+----------------------------------------------------------------------------------
+-- Serial Data Shift Register
+----------------------------------------------------------------------------------
+	u_rSerDataIn : Process (Clk)
+	Begin
+		if ( rising_edge(Clk) ) then
+			if (RstB = '0') then
+				rSerDataIn <= (others => '1');
+			else
+				if (rBuadEnd = '1') then
+					rSerDataIn <= SerDataIn & rSerDataIn(9 downto 1);
+				else
+					rSerDataIn <= rSerDataIn;
+				end if;
+			end if;
+		end if;
+	End Process u_rSerDataIn;
+
+----------------------------------------------------------------------------------
+-- Baudrate Counter
+----------------------------------------------------------------------------------
+	u_rBuadCnt : Process(Clk)
+	Begin
+		if (rising_edge(Clk)) then
+			if (RstB = '0') then
+				rBuadCnt <= conv_std_logic_vector(cBuadrate,10);
+			else
+				
+				if (rState = stWrEnd) then
+					rBuadCnt <= rBuadCnt - 1;
+				else
+					rBuadCnt <= rBuadCnt;
+				end if;
+			end if;
+		end if;
+	End Process	u_rBuadCnt;
+
+----------------------------------------------------------------------------------
+-- Baud End Signal
+----------------------------------------------------------------------------------
+	u_rBuadEnd : Process(Clk)
+	Begin
+		if (rising_edge(Clk)) then
+			if (rBuadCnt = cBuadrate) then
+				rBuadEnd <= '1';
+			else
+				rBuadEnd <= '0';
+			end if;
+		end if;
+	End Process	u_rBuadEnd;
+	
+	u_rRxFfWrData : Process(Clk)
+	begin
+		if (rising_edge(Clk)) then
+			if (RstB = '0') then
+				rRxFfWrData <= 	(others => '0');
+			else
+				if (rRxFfWrEn = '1' and RxFfFull = '0') then
+					rRxFfWrData <= rRxFfWrData + 1; -- Write O/P
+				else
+					rRxFfWrData <= rRxFfWrData;
+				end if ;		
+			end if ;
+		end if ;
+		End Process	u_rRxFfWrData;
+
+
+
+End Architecture rtl;

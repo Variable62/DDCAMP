@@ -1,0 +1,96 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dG:/Pat/DDCamp/Project/Day2_Exercise/Lab1_CntUpDwn/sim
+Ecntupdwn
+Z0 w1761876743
+Z1 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
+Z2 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
+Z3 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z4 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+Z5 dC:/DDCAMP/Day2_Exercise/Lab1_CntUpDwn/sim
+Z6 8../source/CntUpDwn.vhd
+Z7 F../source/CntUpDwn.vhd
+l0
+L24
+VaN6cOZl9_K<_D60TQhO<33
+!s100 S2AVjKkiM;ao17lbfN9jn1
+Z8 OV;C;10.5b;63
+32
+Z9 !s110 1762027417
+!i10b 1
+Z10 !s108 1762027417.000000
+Z11 !s90 -reportprogress|300|-work|work|../source/CntUpDwn.vhd|
+Z12 !s107 ../source/CntUpDwn.vhd|
+!i113 1
+Z13 o-work work
+Z14 tExplicit 1 CvgOpt 0
+Artl
+R1
+R2
+R3
+R4
+DEx4 work 8 cntupdwn 0 22 aN6cOZl9_K<_D60TQhO<33
+l53
+L37
+V]cnh[oc7c<<z5f=hQ6@h@2
+!s100 7YTFH9J3mALFMeWj19Kj00
+R8
+32
+R9
+!i10b 1
+R10
+R11
+R12
+!i113 1
+R13
+R14
+Etbcntupdwn
+Z15 w1761898328
+R1
+R2
+R3
+R4
+R5
+Z16 8../Testbench/TbCntUpDwn.vhd
+Z17 F../Testbench/TbCntUpDwn.vhd
+l0
+L52
+V0KM8HhJf>0oa6XR@ko7c52
+!s100 FzkXEX[F2jd4G7:9hFol93
+R8
+32
+R9
+!i10b 1
+R10
+Z18 !s90 -reportprogress|300|-work|work|../Testbench/TbCntUpDwn.vhd|
+Z19 !s107 ../Testbench/TbCntUpDwn.vhd|
+!i113 1
+R13
+R14
+Ahtwtestbench
+R1
+R2
+R3
+R4
+Z20 DEx4 work 10 tbcntupdwn 0 22 0KM8HhJf>0oa6XR@ko7c52
+l94
+L55
+V:F_[Eb=3[=n3XP4f8`>IG2
+!s100 hiKFKgZ_7ATQYWFWX4D8a0
+R8
+32
+R9
+!i10b 1
+R10
+R18
+R19
+!i113 1
+R13
+R14

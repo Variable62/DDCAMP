@@ -1,0 +1,41 @@
+------------------------------------------------------------
+TimeQuest Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1200mV 85C Model Setup 'VGAClk'
+Slack : -2.300
+TNS   : -92.072
+
+Type  : Slow 1200mV 85C Model Hold 'VGAClk'
+Slack : 0.331
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'VGAClk'
+Slack : -3.000
+TNS   : -61.656
+
+Type  : Slow 1200mV 0C Model Setup 'VGAClk'
+Slack : -2.046
+TNS   : -80.313
+
+Type  : Slow 1200mV 0C Model Hold 'VGAClk'
+Slack : 0.301
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'VGAClk'
+Slack : -3.000
+TNS   : -61.656
+
+Type  : Fast 1200mV 0C Model Setup 'VGAClk'
+Slack : -0.555
+TNS   : -17.972
+
+Type  : Fast 1200mV 0C Model Hold 'VGAClk'
+Slack : 0.153
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'VGAClk'
+Slack : -3.000
+TNS   : -52.953
+
+------------------------------------------------------------
