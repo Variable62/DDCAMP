@@ -89,7 +89,7 @@ Begin
         if (rising_edge(Clk)) then
             if (RstB = '0') then
                 rBuadCnt <= conv_std_logic_vector(cBuadrate,10);
-            else
+            else    
                 if (rState = stIdle) then
                     rBuadCnt <= conv_std_logic_vector(cBuadrate,10);
                 
